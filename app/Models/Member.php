@@ -2,26 +2,24 @@
 
 namespace App\Models;
 
-use Dotenv\Repository\Adapter\GuardedWriter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Book extends Model
+class Member extends Model
 {
     use HasFactory;
 
     // Nama tabel (opsional karena Laravel otomatis pakai 'books')
-    protected $table = 'books';
+    protected $table = 'members';
 
     protected $guarded = ['created_at', 'updated_at'];
 
     // Kolom yang boleh diisi secara mass assignment (fillable)
     protected $fillable = [
-        'judul',
-        'penulis',
-        'penerbit',
-        'tahun_terbit',
-        'cover_image',
-        'stok',
+        'nama',
+        'email',
+        'telepon',
+        'alamat',
+        'tanggal_daftar',
     ];
 }

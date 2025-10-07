@@ -3,16 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Member;
 use Illuminate\Http\Request;
 
-class BookController extends Controller
+class DashboardController extends Controller
 {
-
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        return view('books', [
-            'title' => 'Daftar Buku',
-            'books' => Book::all()
+        return view('dashboard', [
+            'title' => 'Dashboard',
+            'countMembers' => Member::count(),
+            'countBooks' => Book::count(),
         ]);
     }
 
