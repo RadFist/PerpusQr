@@ -3,7 +3,9 @@
 use App\Http\Controllers\Authentication as ControllersAuthentication;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MemberController;
 use App\Http\Middleware\authentication;
+use App\Models\Member;
 use Illuminate\Support\Facades\Route;
 
 
@@ -20,7 +22,7 @@ Route::post('/logout', [ControllersAuthentication::class, 'logout']);
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/dashboard');
 });
 
 
@@ -30,6 +32,8 @@ Route::get('/Home', function () {
 
 //protected routes
 Route::middleware([authentication::class])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/dashboard', DashboardController::class);
+
     Route::resource('books', BookController::class);
+    Route::resource('members', MemberController::class);
 });

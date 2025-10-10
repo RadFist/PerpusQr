@@ -64,4 +64,6 @@
         </table>
     </div>
 </div>
+
+@include('components.modalNotif')
 @endsection
