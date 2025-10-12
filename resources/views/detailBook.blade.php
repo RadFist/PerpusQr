@@ -17,8 +17,9 @@
         <!-- Gambar Cover Buku -->
         <div class="col-md-4 text-center p-4">
             @if ($cover_image)
-            <img src="{{$cover_image}}" alt="Cover Buku" class="img-fluid rounded shadow-sm" style="max-height: 350px; object-fit: cover;">
-            <!-- <img src="{{ asset('storage/' . $cover_image) }}" alt="Cover Buku" class="img-fluid rounded shadow-sm" style="max-height: 350px; object-fit: cover;"> -->
+            <!-- <img src="{{$cover_image}}" alt="Cover Buku" class="img-fluid rounded shadow-sm" style="max-height: 350px; object-fit: cover;"> -->
+            <img src="{{ asset('img/covers/' . $cover_image) }}" alt="Cover Buku" class="img-fluid rounded shadow-sm" style="max-height: 350px; object-fit: cover;">
+
             @else
             <img src="https://cdn-icons-png.flaticon.com/512/29/29302.png" alt="No Cover" class="img-fluid rounded" style="max-height: 350px;">
             @endif
