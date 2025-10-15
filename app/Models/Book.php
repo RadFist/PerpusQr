@@ -2,9 +2,13 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Dotenv\Repository\Adapter\GuardedWriter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
+use function Pest\Laravel\get;
 
 class Book extends Model
 {
@@ -24,4 +28,16 @@ class Book extends Model
         'cover_image',
         'stok',
     ];
+
+
+    //testing getterAndSetter
+    protected function createdAt(): Attribute
+    {
+        return Attribute::make(
+            //getter or accessor
+            get: fn(string $value) => "Tahun " . Carbon::parse($value)->format('d-m-Y'),
+            //setter or mutator
+            set: fn(string $value) => Carbon::parse($value)->format('Y-m-d')
+        );
+    }
 }

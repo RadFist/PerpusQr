@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\Authentication as ControllersAuthentication;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\BorrowController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\TestingController;
 use App\Http\Middleware\authentication;
-use App\Models\Member;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
@@ -30,10 +32,24 @@ Route::get('/Home', function () {
     return redirect('/dashboard');
 });
 
+Route::get('/testing', [TestingController::class, 'index']);
+
+
 //protected routes
 Route::middleware([authentication::class])->group(function () {
     Route::get('/dashboard', DashboardController::class);
 
     Route::resource('books', BookController::class);
     Route::resource('members', MemberController::class);
+    Route::resource('borrow', BorrowController::class);
+    Route::post('API/borrow/scan', function (Request $request) {
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Scan berhasil',
+            'data' => [
+                'nama_buku' => 'Laravel untuk Pemula',
+                'peminjam' => 'Rina'
+            ]
+        ], 200);
+    });
 });
