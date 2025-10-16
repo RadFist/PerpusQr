@@ -22,5 +22,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call(BookSeeder::class);
+        $this->call(MemberSeeder::class);
+        $this->call(BorrowingSeeder::class);
     }
 }

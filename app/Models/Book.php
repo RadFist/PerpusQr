@@ -30,7 +30,7 @@ class Book extends Model
     ];
 
 
-    //testing getterAndSetter
+    // testing getterAndSetter
     protected function createdAt(): Attribute
     {
         return Attribute::make(
@@ -39,5 +39,10 @@ class Book extends Model
             //setter or mutator
             set: fn(string $value) => Carbon::parse($value)->format('Y-m-d')
         );
+    }
+
+    public function borrowings()
+    {
+        return $this->hasMany(Borrowing::class);
     }
 }

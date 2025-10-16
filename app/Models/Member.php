@@ -22,4 +22,9 @@ class Member extends Model
         'alamat',
         'tanggal_daftar',
     ];
+
+    public function borrowings()
+    {
+        return $this->hasMany(Borrowing::class);
+    }
 }

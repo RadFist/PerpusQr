@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Book;
+use App\Models\Member;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,10 +17,14 @@ return new class extends Migration
             $table->id();
 
             // Relasi ke tabel members
-            $table->foreignId('member_id')->constrained('members')->onDelete('cascade');
+            $table->foreignIdFor(Member::class)
+                ->constrained('members')
+                ->onDelete('cascade');
 
             // Relasi ke tabel books
-            $table->foreignId('book_id')->constrained('books')->onDelete('cascade');
+            $table->foreignIdFor(Book::class)
+                ->constrained('books')
+                ->onDelete('cascade');
 
             // Detail peminjaman
             $table->date('tanggal_pinjam');
