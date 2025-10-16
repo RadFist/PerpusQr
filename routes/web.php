@@ -42,14 +42,6 @@ Route::middleware([authentication::class])->group(function () {
     Route::resource('books', BookController::class);
     Route::resource('members', MemberController::class);
     Route::resource('borrow', BorrowController::class);
-    Route::post('API/borrow/scan', function (Request $request) {
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Scan berhasil',
-            'data' => [
-                'nama_buku' => 'Laravel untuk Pemula',
-                'peminjam' => 'Rina'
-            ]
-        ], 200);
-    });
+
+    Route::post('API/borrow/scan', [BorrowController::class, 'Scanning']);
 });

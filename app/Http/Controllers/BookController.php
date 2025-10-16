@@ -67,7 +67,7 @@ class BookController extends Controller
         return view(
             'detailBook',
             [
-
+                'id' => $book->id,
                 'judul' => $book->judul,
                 'penulis' => $book->penulis,
                 'penerbit' => $book->penerbit,

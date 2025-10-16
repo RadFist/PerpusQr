@@ -35,7 +35,7 @@
             <div class="card-body text-center">
                 <i class="bi bi-journal-text text-warning display-5 mb-3"></i>
                 <h5 class="fw-semibold">Peminjaman Aktif</h5>
-                <p class="text-muted mb-0">20 Buku Sedang Dipinjam</p>
+                <p class="text-muted mb-0">{{$countBorrowing}} Buku Sedang Dipinjam</p>
             </div>
         </div>
     </div>

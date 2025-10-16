@@ -41,14 +41,14 @@
                     <th>Aksi</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="tbody_borrowing">
                 @forelse ($borrowings as $borrow)
                 <tr>
                     <td class="text-center">{{ $loop->iteration }}</td>
                     <td>{{ $borrow->member->nama }}</td>
                     <td>{{ $borrow->book->judul }}</td>
                     <td>{{ \Carbon\Carbon::parse($borrow->tanggal_pinjam)->format('d M Y') }}</td>
-                    <td>{{ \Carbon\Carbon::parse($borrow->tanggal_kembali)->format('d M Y') }}</td>
+                    <td>{{ $borrow->tanggal_kembali ? \Carbon\Carbon::parse($borrow->tanggal_kembali)->format('d M Y') : '-' }}</td>
                     <td class="text-center">
                         @if ($borrow->status === 'dipinjam')
                         <span class="badge bg-warning text-dark">Dipinjam</span>

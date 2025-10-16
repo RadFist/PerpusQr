@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Borrowing;
 use App\Models\Member;
 use Illuminate\Http\Request;
 
@@ -17,6 +18,7 @@ class DashboardController extends Controller
             'title' => 'Dashboard',
             'countMembers' => Member::count(),
             'countBooks' => Book::count(),
+            'countBorrowing' => Borrowing::where('status', 'dipinjam')->count()
         ]);
     }
 }

@@ -56,7 +56,20 @@
                     <i class="bi bi-arrow-left"></i> Kembali ke Daftar
                 </a>
             </div>
+
         </div>
     </div>
 </div>
+
+<div class="card border-0 shadow-sm mt-2">
+    <div class="card-body p-4">
+        <h5 class="fw-semibold mb-3 text-center">Qr Code</h5>
+        <div class="d-flex justify-content-center">
+
+            {!! QrCode::size(200)->generate($id) !!}
+        </div>
+    </div>
+</div>
+
+
 @endsection

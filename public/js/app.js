@@ -65,16 +65,16 @@ $("#scannerModal").on("hidden.bs.modal", function () {
 $("#submit-scan").click(function () {
     const hasilBuku = $("#scan-result-buku").val();
     const hasilAnggota = $("#scan-result-anggota").val();
-    // if (!hasilBuku && !hasilAnggota) {
-    //     alert("Belum ada hasil scan!");
-    //     return;
-    // }
+    if (!hasilBuku && !hasilAnggota) {
+        alert("Belum ada hasil scan!");
+        return;
+    }
 
-    // // Contoh: masukkan ke input form di luar modal
-    // if (!hasilBuku || !hasilAnggota) {
-    //     alert("Scan belum lengkap!");
-    //     return;
-    // }
+    // Contoh: masukkan ke input form di luar modal
+    if (!hasilBuku || !hasilAnggota) {
+        alert("Scan belum lengkap!");
+        return;
+    }
 
     const data = [hasilAnggota, hasilBuku];
 
@@ -105,6 +105,7 @@ async function fecthData(data) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                Accept: "application/json",
                 "X-CSRF-TOKEN": csrfToken,
             },
             body: JSON.stringify({
@@ -114,6 +115,8 @@ async function fecthData(data) {
         });
 
         const result = await response.json();
+
+        appendBorrowing(result.data);
         console.log(result);
 
         // ✅ Tutup modal setelah respons berhasil
@@ -125,4 +128,58 @@ async function fecthData(data) {
             loadingModal.hide();
         }, 2000);
     }
+}
+
+function appendBorrowing(data) {
+    const csrfToken = $('meta[name="csrf-token"]').attr("content");
+    const newRow = $(`
+        <tr>
+            <td class="text-center">#</td>
+            <td>${data.nama}</td>
+            <td>${data.judul}</td>
+            <td>${formatDate(data.tanggal_pinjam)}</td>
+            <td>${
+                data.tanggal_kembali ? formatDate(data.tanggal_kembali) : "-"
+            }</td>
+            <td class="text-center">
+                <span class="badge bg-warning text-dark">Dipinjam</span>
+            </td>
+            <td class="text-center">
+                <a href="/borrow/${
+                    data.id
+                }/edit" class="btn btn-sm btn-warning">
+                    <i class="bi bi-pencil"></i>
+                </a>
+                <form action="/borrow/${
+                    data.id
+                }" method="POST" class="d-inline">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="_token" value="${csrfToken}">
+                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
+    `);
+
+    $("#tbody_borrowing").append(newRow);
+    updateRowNumbers();
+}
+
+function updateRowNumbers() {
+    $("#tbody_borrowing tr").each(function (index) {
+        $(this)
+            .find("td:first")
+            .text(index + 1);
+    });
+}
+
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("id-ID", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+    });
 }
