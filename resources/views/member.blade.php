@@ -36,7 +36,7 @@
                 <tbody>
                     @foreach ($members as $index => $member)
                     <tr>
-                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $members->firstItem() + $loop->index }}</td>
                         <td class="fw-semibold">{{ $member->nama }}</td>
                         <td>{{ $member->email }}</td>
                         <td>{{ $member->telepon ?? '-' }}</td>
@@ -58,6 +58,9 @@
                         </td>
                     </tr>
                     @endforeach
+
+                    {{ $members->links('pagination::bootstrap-5') }}
+
                 </tbody>
             </table>
         </div>

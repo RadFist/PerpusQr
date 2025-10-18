@@ -14,7 +14,7 @@ class BookController extends Controller
     {
         return view('books', [
             'title' => 'Daftar Buku',
-            'books' => Book::all()
+            'books' => Book::paginate(10)
         ]);
     }
 

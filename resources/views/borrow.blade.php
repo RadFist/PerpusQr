@@ -44,7 +44,7 @@
             <tbody id="tbody_borrowing">
                 @forelse ($borrowings as $borrow)
                 <tr>
-                    <td class="text-center">{{ $loop->iteration }}</td>
+                    <td class="text-center">{{ $borrowings->firstItem() + $loop->index  }}</td>
                     <td>{{ $borrow->member->nama }}</td>
                     <td>{{ $borrow->book->judul }}</td>
                     <td>{{ \Carbon\Carbon::parse($borrow->tanggal_pinjam)->format('d M Y') }}</td>
@@ -57,13 +57,13 @@
                         @endif
                     </td>
                     <td class="text-center">
-                        <a href="{{ route('borrow.edit', $borrow->id) }}" class="btn btn-sm btn-warning">
-                            <i class="bi bi-pencil"></i>
+                        <a href="{{ route('borrow.edit', $borrow->id) }}" class="btn btn-sm btn-outline-success">
+                            <i class="bi bi-pencil-square"></i>
                         </a>
                         <form action="{{ route('borrow.destroy', $borrow->id) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
-                            <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')">
+                            <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Yakin ingin menghapus?')">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </form>
@@ -74,7 +74,11 @@
                     <td colspan="7" class="text-center text-muted">Belum ada data peminjaman</td>
                 </tr>
                 @endforelse
+
+                {{ $borrowings->links('pagination::bootstrap-5') }}
+
             </tbody>
+
         </table>
     </div>
 </div>

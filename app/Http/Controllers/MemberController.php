@@ -12,7 +12,7 @@ class MemberController extends Controller
     {
         return view('member', [
             'title' => 'Daftar Anggota',
-            'members' => Member::all()
+            'members' => Member::paginate(10)
         ]);
     }
 

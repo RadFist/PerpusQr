@@ -147,24 +147,35 @@ function appendBorrowing(data) {
             <td class="text-center">
                 <a href="/borrow/${
                     data.id
-                }/edit" class="btn btn-sm btn-warning">
-                    <i class="bi bi-pencil"></i>
+                }/edit"  class="btn btn-sm btn-outline-success">
+                     <i class="bi bi-pencil-square"></i>
                 </a>
                 <form action="/borrow/${
                     data.id
                 }" method="POST" class="d-inline">
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="hidden" name="_token" value="${csrfToken}">
-                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')">
-                        <i class="bi bi-trash"></i>
+                    <button type="submit"  class="btn btn-sm btn-outline-danger" onclick="return confirm('Yakin ingin menghapus?')">
+                          <i class="bi bi-trash"></i>
                     </button>
                 </form>
             </td>
         </tr>
     `);
+    let pagination = $(".pagination");
+    if (pagination.length > 0) {
+        let liItems = pagination.find("li");
+        let liCount = liItems.length;
+        let secondLastLi = liItems.eq(liCount - 2);
 
-    $("#tbody_borrowing").append(newRow);
-    updateRowNumbers();
+        if (secondLastLi.hasClass("active")) {
+            $("#tbody_borrowing").append(newRow);
+            updateRowNumbers();
+        }
+    } else {
+        $("#tbody_borrowing").append(newRow);
+        updateRowNumbers();
+    }
 }
 
 function updateRowNumbers() {

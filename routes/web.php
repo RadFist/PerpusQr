@@ -7,7 +7,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\TestingController;
 use App\Http\Middleware\authentication;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 

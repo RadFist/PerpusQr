@@ -41,6 +41,24 @@ class Book extends Model
         );
     }
 
+    // function to decrease book stock
+    public function decreaseStock($amount = 1)
+    {
+        if ($this->stok < $amount) {
+            throw new \Exception("Stok buku tidak cukup");
+        }
+
+        $this->stok -= $amount;
+        $this->save();
+    }
+
+    // function to increase book stock
+    public function increaseStock($amount = 1)
+    {
+        $this->stok += $amount;
+        $this->save();
+    }
+
     public function borrowings()
     {
         return $this->hasMany(Borrowing::class);

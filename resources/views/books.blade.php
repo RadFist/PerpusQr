@@ -29,7 +29,7 @@
             <tbody>
                 @forelse ($books as $index => $book)
                 <tr>
-                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $books->firstItem() + $loop->index }}</td>
                     <td>{{ $book->judul }}</td>
                     <td>{{ $book->penulis }}</td>
                     <td>{{ $book->penerbit }}</td>
@@ -60,6 +60,9 @@
                     </td>
                 </tr>
                 @endforelse
+
+                {{ $books->links('pagination::bootstrap-5') }}
+
             </tbody>
         </table>
     </div>

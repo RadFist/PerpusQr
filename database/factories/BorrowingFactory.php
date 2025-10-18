@@ -22,8 +22,8 @@ class BorrowingFactory extends Factory
         $isReturned = $this->faker->boolean(50);
 
         return [
-            'member_id' => Member::factory(), // buat member otomatis
-            'book_id' => Book::factory(),     // buat buku otomatis
+            'member_id' => Member::inRandomOrder()->value('id'),
+            'book_id' => Book::inRandomOrder()->value('id'),
             'tanggal_pinjam' => $tanggalPinjam,
             'tanggal_kembali' => $isReturned ? $this->faker->dateTimeBetween($tanggalPinjam, 'now') : null,
             'status' => $isReturned ? 'dikembalikan' : 'dipinjam',
