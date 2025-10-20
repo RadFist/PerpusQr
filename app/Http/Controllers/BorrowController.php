@@ -6,6 +6,7 @@ use App\Models\Book;
 use Illuminate\Support\Facades\Log;
 
 use App\Models\Borrowing;
+use App\Models\Member;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\TryCatch;
 
@@ -28,12 +29,31 @@ class BorrowController extends Controller
 
     public function create()
     {
-        echo "create";
+        return view('formBorrow', [
+            'title' => 'Tambah Peminjaman',
+            'members' => Member::all(),
+            'books' => Book::where('stok', '>', 0)->get(),
+
+        ]);
     }
 
     public function store(Request $request)
     {
-        echo "store";
+
+        $validate = $request->validate([
+            'member_id' => 'required',
+            'book_id' => 'required',
+            'tanggal_pinjam' => 'required|date',
+            'tanggal_kembali' => 'nullable|date|after_or_equal:tanggal_pinjam',
+            'status' => 'nullable|string',
+        ]);
+
+        try {
+            Borrowing::create($validate);
+            return redirect('/borrow')->with('success', 'Peminjaman berhasil ditambahkan!');
+        } catch (\Throwable $th) {
+            return redirect('/borrow')->with('error', 'Terjadi kesalahan: ' . $th->getMessage());
+        }
     }
 
     public function show($id)
@@ -41,14 +61,32 @@ class BorrowController extends Controller
         echo "show";
     }
 
-    public function edit($id)
+    public function edit(Borrowing $borrow)
     {
-        echo "edit";
+        return view('formBorrow', [
+            'title' => 'Tambah Peminjaman',
+            'members' => Member::all(),
+            'books' => Book::where('stok', '>', 0)->get(),
+            'borrow' => $borrow
+        ]);
     }
 
     public function update(Request $request, $id)
     {
-        //
+        $validate = $request->validate([
+            'member_id' => 'required',
+            'book_id' => 'required',
+            'tanggal_pinjam' => 'required|date',
+            'tanggal_kembali' => 'nullable|date|after_or_equal:tanggal_pinjam',
+            'status' => 'nullable|string',
+        ]);
+
+        try {
+            Borrowing::where('id', $id)->update($validate);
+            return redirect('/borrow')->with('success', 'Peminjaman berhasil diupdate!');
+        } catch (\Throwable $th) {
+            return redirect('/borrow')->with('error', 'Terjadi kesalahan: ' . $th->getMessage());
+        }
     }
 
     public function destroy(Borrowing $borrow)
