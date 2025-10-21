@@ -16,8 +16,8 @@ class DashboardController extends Controller
     public function __invoke()
     {
         Log::info("Dashboard accessed by user : " .  Auth::user()->name);
-
-        return view('dashboard', [
+        Log::emergency("Testing Logging");
+        return view('page.dashboard', [
             'title' => 'Dashboard',
             'countMembers' => Member::count(),
             'countBooks' => Book::count(),

@@ -65,6 +65,7 @@ $("#scannerModal").on("hidden.bs.modal", function () {
 $("#submit-scan").click(function () {
     const hasilBuku = $("#scan-result-buku").val();
     const hasilAnggota = $("#scan-result-anggota").val();
+
     if (!hasilBuku && !hasilAnggota) {
         alert("Belum ada hasil scan!");
         return;

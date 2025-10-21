@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\TestingController;
 use App\Http\Middleware\authentication;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 
@@ -15,11 +16,12 @@ Route::get('/login', [ControllersAuthentication::class, 'loginPage']);
 
 Route::get('/register', [ControllersAuthentication::class, 'registerPage']);
 
-Route::post('/login', [ControllersAuthentication::class, 'login']);
+Route::post('/login', [ControllersAuthentication::class, 'login'])->withoutMiddleware([VerifyCsrfToken::class]);
 
 Route::post('/register', [ControllersAuthentication::class, 'registration']);
 
-Route::post('/logout', [ControllersAuthentication::class, 'logout']);
+Route::post('/logout', [ControllersAuthentication::class, 'logout'])
+    ->withoutMiddleware([VerifyCsrfToken::class]);
 
 
 Route::get('/', function () {

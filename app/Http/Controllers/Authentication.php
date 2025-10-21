@@ -13,7 +13,7 @@ class Authentication extends Controller
         $title = "Login Page";
 
 
-        return  view('login', [
+        return  view('page.login', [
             'tite' => $title,
         ]);
     }
@@ -22,7 +22,7 @@ class Authentication extends Controller
     {
         $title = "Registration Page";
 
-        return view('register', [
+        return view('page.register', [
             'tite' => $title,
         ]);
     }
@@ -76,7 +76,6 @@ class Authentication extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
         return redirect('/login')->with('success', 'Anda telah logout.');
     }
 }

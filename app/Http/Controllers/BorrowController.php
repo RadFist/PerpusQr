@@ -19,7 +19,7 @@ class BorrowController extends Controller
         $borrowings = Borrowing::with(['member', 'book'])->paginate(10); // eager load relationships
         // $borrowings = Borrowing::all();      // lazy load relationships (ini yang lama quernya banyak)
         return view(
-            'borrow',
+            'page.borrows.index',
             [
                 'title' => 'Peminjaman Buku',
                 'borrowings' => $borrowings
@@ -29,7 +29,7 @@ class BorrowController extends Controller
 
     public function create()
     {
-        return view('formBorrow', [
+        return view('page.borrows.form', [
             'title' => 'Tambah Peminjaman',
             'members' => Member::all(),
             'books' => Book::where('stok', '>', 0)->get(),
@@ -63,7 +63,7 @@ class BorrowController extends Controller
 
     public function edit(Borrowing $borrow)
     {
-        return view('formBorrow', [
+        return view('page.borrows.form', [
             'title' => 'Tambah Peminjaman',
             'members' => Member::all(),
             'books' => Book::where('stok', '>', 0)->get(),
@@ -117,6 +117,7 @@ class BorrowController extends Controller
 
     public function Scanning(Request $request, Borrowing $borrow)
     {
+        Log::info("data hasil scanning " . $request->anggota_id);
 
         try {
 

@@ -61,12 +61,26 @@ return [
             'ignore_exceptions' => false,
         ],
 
+        'activity' => [
+            'driver' => 'stack',
+            'channels' => ['activity_file', 'stderr'], // tampil di terminal juga
+            'ignore_exceptions' => false,
+        ],
+
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'replace_placeholders' => true,
         ],
+
+        'activity_file' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/activity.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'replace_placeholders' => true,
+        ],
+
 
         'daily' => [
             'driver' => 'daily',

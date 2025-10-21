@@ -12,7 +12,7 @@ class BookController extends Controller
 
     public function index()
     {
-        return view('books', [
+        return view('page.books.index', [
             'title' => 'Daftar Buku',
             'books' => Book::paginate(10)
         ]);
@@ -23,7 +23,7 @@ class BookController extends Controller
      */
     public function create()
     {
-        return view('formBook', [
+        return view('page.books.form', [
             'title' => 'Tambah Buku',
         ]);
     }
@@ -65,7 +65,7 @@ class BookController extends Controller
     {
 
         return view(
-            'detailBook',
+            'page.books.detail',
             [
                 'id' => $book->id,
                 'judul' => $book->judul,
@@ -85,7 +85,7 @@ class BookController extends Controller
     {
 
         return view(
-            'formBook',
+            'page.books.form',
             [
                 'title' => 'Edit Buku',
                 'books' => $book

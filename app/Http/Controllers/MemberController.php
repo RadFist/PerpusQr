@@ -10,7 +10,7 @@ class MemberController extends Controller
 {
     public function index()
     {
-        return view('member', [
+        return view('page.members.index', [
             'title' => 'Daftar Anggota',
             'members' => Member::paginate(10)
         ]);
@@ -18,7 +18,7 @@ class MemberController extends Controller
 
     public function create()
     {
-        return view('formMembers', [
+        return view('page.members.formMembers', [
             'title' => 'Tambah Anggota',
         ]);
     }
@@ -39,7 +39,7 @@ class MemberController extends Controller
 
     public function edit(Member $member)
     {
-        return view('formMembers', [
+        return view('page.members.formMembers', [
             'title' => 'Edit Anggota',
             'members' => $member
         ]);
