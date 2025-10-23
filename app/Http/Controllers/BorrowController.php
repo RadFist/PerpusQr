@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
-use Illuminate\Support\Facades\Log;
-
 use App\Models\Borrowing;
+use App\Models\Loging;
 use App\Models\Member;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use PhpParser\Node\Stmt\TryCatch;
 
 use function Pest\Laravel\json;
@@ -48,10 +48,17 @@ class BorrowController extends Controller
             'status' => 'nullable|string',
         ]);
 
+
         try {
-            Borrowing::create($validate);
+
+            $borrowing = Borrowing::create($validate);
+
+            $borrowing->load(['member', 'book']);
+
+            Loging::addBorrow($borrowing->book->judul, $borrowing->member->nama, 'dipinjam');
             return redirect('/borrow')->with('success', 'Peminjaman berhasil ditambahkan!');
         } catch (\Throwable $th) {
+            Log::emergency($th->getMessage());
             return redirect('/borrow')->with('error', 'Terjadi kesalahan: ' . $th->getMessage());
         }
     }
@@ -115,6 +122,24 @@ class BorrowController extends Controller
     }
 
 
+    public function returning(Request $request)
+    {
+        $id = $request->id;
+
+        $borrow = Borrowing::find($id);
+
+        try {
+            //code...
+            $borrow->update(['status' => 'Dikembalikan']);
+
+            Loging::addBorrow($borrow->book->judul, $borrow->member->nama, 'dikembalikan');
+
+            return redirect(url()->previous())->with('success', 'Buku berhasil dikembalikan!');
+        } catch (\Throwable $th) {
+            return redirect('/borrow')->with('error', 'Terjadi kesalahan: ' . $th->getMessage());
+        }
+    }
+
     public function Scanning(Request $request, Borrowing $borrow)
     {
         Log::info("data hasil scanning " . $request->anggota_id);
@@ -140,6 +165,7 @@ class BorrowController extends Controller
 
             $book->decreaseStock();
 
+            Log::addBorrow($borrow->book->judul, $borrow->member->nama, 'dipinjam');
             return response()->json([
                 'status' => 'success',
                 'message' => 'Scan berhasil',

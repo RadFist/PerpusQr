@@ -51,9 +51,12 @@
                     <td>{{ $borrow->tanggal_kembali ? \Carbon\Carbon::parse($borrow->tanggal_kembali)->format('d M Y') : '-' }}</td>
                     <td class="text-center">
                         @if ($borrow->status === 'dipinjam')
-                        <span class="badge bg-warning text-dark">Dipinjam</span>
+                        <form action="{{ route('borrow.return', $borrow->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="badge bg-warning text-dark border-0 text-decoration-none ">Dipinjam</button>
+                        </form>
                         @else
-                        <span class="badge bg-success">Dikembalikan</span>
+                        <button class="badge bg-success border-0 text-decoration-none">Dikembalikan</button>
                         @endif
                     </td>
                     <td class="text-center">

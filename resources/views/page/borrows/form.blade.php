@@ -82,7 +82,9 @@
                 <label for="status" class="form-label fw-semibold">Status</label>
                 <select name="status" id="status" class="form-select">
                     <option value="dipinjam" {{ isset($borrow) && $borrow->status == 'dipinjam' ? 'selected' : '' }}>Dipinjam</option>
+                    @if (isset($borrow))
                     <option value="dikembalikan" {{ isset($borrow) && $borrow->status == 'dikembalikan' ? 'selected' : '' }}>Dikembalikan</option>
+                    @endif
                 </select>
             </div>
 

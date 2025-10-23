@@ -44,5 +44,7 @@ Route::middleware([authentication::class])->group(function () {
     Route::resource('members', MemberController::class);
     Route::resource('borrow', BorrowController::class);
 
+    Route::post('borrow/dikembalikan/{id}', [BorrowController::class,  'returning'])->name('borrow.return');
+
     Route::post('API/borrow/scan', [BorrowController::class, 'Scanning']);
 });

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Models\Loging;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -49,7 +51,7 @@ class Authentication extends Controller
     //post registration logic function
     public function registration(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
@@ -57,11 +59,9 @@ class Authentication extends Controller
 
 
         // Simpan user baru
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password,
-        ]);
+        $user = User::create($validated);
+
+        Loging::addMember($request->name, 'ditambahkan', "admin");
 
         // Login otomatis setelah registrasi (optional)
         Auth::login($user);

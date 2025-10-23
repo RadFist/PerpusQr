@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Loging;
 use App\Models\Member;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\TryCatch;
@@ -33,7 +34,7 @@ class MemberController extends Controller
             'tanggal_daftar' => 'nullable|date',
         ]);
         Member::create($validated);
-
+        Loging::addMember($request->nama, 'ditambahkan');
         return redirect()->route('members.index')->with('success', 'Anggota berhasil ditambahkan!');
     }
 
@@ -63,6 +64,7 @@ class MemberController extends Controller
             }
 
             // Update data
+            Loging::addMember($request->nama, 'diedit');
             //code...
             $member->update($validated);
         } catch (\Exception $e) {
@@ -85,6 +87,7 @@ class MemberController extends Controller
             // Hapus buku
 
             $member->delete();
+            Loging::addMember($member->nama, 'dihapus');
 
             // Berhasil dihapus
             return redirect('/members')->with('success', 'Anggota berhasil dihapus!');

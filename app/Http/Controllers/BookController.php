@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Loging;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use PhpParser\Node\Stmt\Echo_;
@@ -51,6 +52,7 @@ class BookController extends Controller
                 $validated['cover_image'] = $filename;
                 Book::create($validated);
                 $request->file('cover_image')->move(public_path('img/covers'), $path);
+                Loging::addBook($validated['judul'], 'ditambahkan');
             } catch (\Exception $e) {
                 return back()->with('error', 'Gagal mengunggah buku: ' . $e->getMessage());
             }
@@ -126,6 +128,7 @@ class BookController extends Controller
                 $filename = basename($path);
                 $request->file('cover_image')->move(public_path('img/covers'), $path);
                 $validated['cover_image'] = $filename;
+                Loging::addBook($validated['judul'], 'diedit');
             } else {
                 // Kalau tidak upload cover baru, pakai yang lama
                 $validated['cover_image'] = $book->cover_image;
@@ -159,6 +162,7 @@ class BookController extends Controller
             // Hapus buku
             $book->delete();
 
+            Loging::addBook($book->judul, 'ditambahkan');
             // Berhasil dihapus
             return redirect('/books')->with('success', 'Buku berhasil dihapus!');
         } catch (\Exception $e) {

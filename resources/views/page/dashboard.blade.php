@@ -46,15 +46,24 @@
         <i class="bi bi-clock-history me-2"></i>Riwayat Aktivitas Terbaru
     </h5>
     <ul class="list-group">
+        @foreach ($dataLog as $index => $data)
+        @php
+        $log = $data->log;
+        if (str_contains($log, 'ditambahkan')) {
+        $icon = 'bi-plus-circle-fill text-primary';
+        } elseif (str_contains($log, 'dihapus')) {
+        $icon = 'bi-trash-fill text-danger';
+        } elseif (str_contains($log, 'diedit')) {
+        $icon = 'bi-exclamation-circle-fill text-warning';
+        } else {
+        $icon = 'bi-info-circle text-secondary';
+        }
+        @endphp
+
         <li class="list-group-item">
-            <i class="bi bi-check-circle-fill text-success me-2"></i> Buku <strong>Laravel Untuk Pemula</strong> dikembalikan oleh <strong>Rina</strong>.
+            <i class="bi {{ $icon }} me-2"></i> {{ $log }}
         </li>
-        <li class="list-group-item">
-            <i class="bi bi-exclamation-circle-fill text-warning me-2"></i> Buku <strong>Pemrograman PHP Lanjutan</strong> belum dikembalikan (3 hari terlambat).
-        </li>
-        <li class="list-group-item">
-            <i class="bi bi-plus-circle-fill text-primary me-2"></i> Anggota baru <strong>Ahmad Fauzi</strong> telah mendaftar.
-        </li>
+        @endforeach
     </ul>
 </div>
 @endsection

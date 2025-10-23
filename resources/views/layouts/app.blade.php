@@ -136,9 +136,9 @@
             <i class="bi bi-journal-text"></i> Peminjaman
         </a>
 
-        <a href="/reports" class="{{ request()->is('reports*') ? 'active' : '' }}">
+        <!-- <a href="/reports" class="{{ request()->is('reports*') ? 'active' : '' }}">
             <i class="bi bi-file-earmark-bar-graph"></i> Laporan
-        </a>
+        </a> -->
 
         <hr style="border-color: rgba(255,255,255,0.3);">
         <form id="logout-form" action="/logout" method="POST" class="mt-0 d-flex justify-content-center">

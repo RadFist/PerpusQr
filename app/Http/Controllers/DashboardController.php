@@ -6,7 +6,10 @@ use App\Models\Book;
 use App\Models\Borrowing;
 use App\Models\Member;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+
+
 
 class DashboardController extends Controller
 {
@@ -17,11 +20,18 @@ class DashboardController extends Controller
     {
         Log::info("Dashboard accessed by user : " .  Auth::user()->name);
         Log::emergency("Testing Logging");
+
+        $dataLogs = DB::table('logs')
+            ->orderByDesc('created_at')
+            ->limit(5)
+            ->get();
+
         return view('page.dashboard', [
             'title' => 'Dashboard',
             'countMembers' => Member::count(),
             'countBooks' => Book::count(),
-            'countBorrowing' => Borrowing::where('status', 'dipinjam')->count()
+            'countBorrowing' => Borrowing::where('status', 'dipinjam')->count(),
+            'dataLog' => $dataLogs
         ]);
     }
 }
