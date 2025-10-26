@@ -33,7 +33,8 @@ class Loging extends Model
     public static function addMember($name, $cond, $status = "member")
     {
         // ditambahkan, dihapus, diedit
-        $role =  $status == "member " ? 'anggota, ' : 'admin, ';
+        $role =  $status == "member" ? 'anggota, ' : 'admin, ';
+
         return self::insert([
             'log' =>  $role . $name . ' telah ' . $cond,
             'created_at' => now(),

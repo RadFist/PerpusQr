@@ -161,6 +161,7 @@ class BorrowController extends Controller
 
 
             $borrow->load(['member', 'book']);
+
             $book = Book::findOrFail($data['buku_id']);
 
             $book->decreaseStock();

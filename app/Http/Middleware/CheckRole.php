@@ -16,18 +16,20 @@ class CheckRole
      * @param  string|array  $roles
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, ...$roles): Response
+    public function handle(Request $request, Closure $next): Response
     {
+
         $user = $request->user();
 
-        // Pastikan user sudah login
         if (!$user) {
             return redirect()->route('login');
         }
-        if (!in_array($user->role, $roles)) {
+
+        if ($user->role != "admin") {
             // Bisa redirect, abort, atau tampilkan error sesuai kebutuhan
             abort(403, 'Anda tidak memiliki akses ke halaman ini.');
         }
+
 
         return $next($request);
     }

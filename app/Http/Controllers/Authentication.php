@@ -42,6 +42,9 @@ class Authentication extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
+            if (Auth::user()->role == "user") {
+                return redirect()->intended('/home')->with('success', 'Login berhasil!');
+            }
             return redirect()->intended('/dashboard')->with('success', 'Login berhasil!');
         }
 
@@ -54,14 +57,20 @@ class Authentication extends Controller
     public function registration(Request $request)
     {
         try {
+            Loging::addMember($request->name, "ditambahkan");
 
-            if ($request->role == "user") {
-                Member::create([
-                    'nama' => request()->name,
-                    'email' => request()->email,
+            $member = null;
+
+            if ($request->role === "user") {
+                $member = Member::create([
+                    'nama' => $request->name,
+                    'email' => $request->email,
                 ]);
-                Loging::addMember($request->name, 'ditambahkan', 'member');
+
+                $member->load('user');
             }
+
+
 
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
@@ -69,6 +78,11 @@ class Authentication extends Controller
                 'password' => 'required|string|min:6|confirmed',
                 'role' => 'nullable'
             ]);
+
+            if ($request->role == "user") {
+                $validated["member_id"] = $member->id;
+            }
+
 
             // Simpan user baru
             $user = User::create($validated);
@@ -82,7 +96,7 @@ class Authentication extends Controller
 
                 return redirect('/dashboard')->with('success', 'Registrasi berhasil! Selamat datang.');
             } else {
-                // return redirect('/BookList')->with('success', 'Registrasi berhasil! Selamat datang.');
+                return redirect('/home')->with('success', 'Registrasi berhasil! Selamat datang.');
             }
             return redirect('/dashboard')->with('success', 'Registrasi berhasil! Selamat datang.');
         } catch (\Throwable $th) {
