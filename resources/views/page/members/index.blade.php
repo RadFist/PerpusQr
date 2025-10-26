@@ -14,12 +14,7 @@
 
 <div class="card border-0 shadow-sm">
     <div class="card-body">
-        @if($members->isEmpty())
-        <div class="text-center text-muted py-4">
-            <i class="bi bi-emoji-frown display-5 d-block mb-3"></i>
-            <p>Belum ada anggota yang terdaftar.</p>
-        </div>
-        @else
+
         <div class="table-responsive">
             <table class="table table-hover align-middle">
                 <thead class="table-primary">
@@ -34,7 +29,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($members as $index => $member)
+                    @forelse ($members as $index => $member)
                     <tr>
                         <td>{{ $members->firstItem() + $loop->index }}</td>
                         <td class="fw-semibold">{{ $member->nama }}</td>
@@ -57,14 +52,21 @@
                             </div>
                         </td>
                     </tr>
-                    @endforeach
+                    @empty
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">
+                            <i class="bi bi-journal-x display-6 d-block mb-2"></i>
+                            Belum ada data anggota.
+                        </td>
+                    </tr>
+                    @endforelse
 
                     {{ $members->links('pagination::bootstrap-5') }}
 
                 </tbody>
             </table>
         </div>
-        @endif
+
     </div>
 </div>
 @include('components.modalNotif')

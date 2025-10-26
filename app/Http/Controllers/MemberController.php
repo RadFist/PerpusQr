@@ -72,7 +72,7 @@ class MemberController extends Controller
         }
 
         // Redirect dengan pesan sukses
-        return redirect()->route('members.index')->with('success', 'Anggota berhasil diperbarui!');
+        return redirect(url()->previous())->with('success', 'Anggota berhasil diperbarui!');
     }
 
 
@@ -90,7 +90,7 @@ class MemberController extends Controller
             Loging::addMember($member->nama, 'dihapus');
 
             // Berhasil dihapus
-            return redirect('/members')->with('success', 'Anggota berhasil dihapus!');
+            return redirect(url()->previous())->with('success', 'Anggota berhasil dihapus!');
         } catch (\Exception $e) {
             // Kalau terjadi error (misal gagal konek DB, foreign key constraint, dll)
             return redirect('/members')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());

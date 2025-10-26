@@ -103,6 +103,14 @@
                                 <input type="email" name="email" id="email" class="form-control" placeholder="contoh@email.com" required>
                             </div>
                             <div class="mb-3">
+                                <label for="role" class="form-label">Role</label>
+                                <select name="role" id="role" class="form-select">
+                                    <option value="user">user</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
                                 <label for="password" class="form-label">Kata Sandi</label>
                                 <input type="password" name="password" id="password" class="form-control" required>
                             </div>

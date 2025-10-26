@@ -21,6 +21,8 @@ class DashboardController extends Controller
         Log::info("Dashboard accessed by user : " .  Auth::user()->name);
         Log::emergency("Testing Logging");
 
+
+
         $dataLogs = DB::table('logs')
             ->orderByDesc('created_at')
             ->limit(5)

@@ -21,10 +21,16 @@ class Member extends Model
         'telepon',
         'alamat',
         'tanggal_daftar',
+
     ];
 
     public function borrowings()
     {
         return $this->hasMany(Borrowing::class);
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
     }
 }

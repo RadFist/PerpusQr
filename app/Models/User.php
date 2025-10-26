@@ -18,6 +18,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'member_id'
     ];
 
 
@@ -30,4 +32,9 @@ class User extends Authenticatable
     protected $casts = [
         'password' => 'hashed',
     ];
+
+    public function member()
+    {
+        return $this->belongsTo(Member::class);
+    }
 }

@@ -150,6 +150,7 @@ class BookController extends Controller
     public function destroy(Book $book)
     {
         try {
+
             // Cek dulu apakah data buku benar-benar ada
             if (!$book) {
                 return redirect('/books')->with('error', 'Buku tidak ditemukan!');
@@ -164,7 +165,7 @@ class BookController extends Controller
 
             Loging::addBook($book->judul, 'ditambahkan');
             // Berhasil dihapus
-            return redirect('/books')->with('success', 'Buku berhasil dihapus!');
+            return redirect(url()->previous())->with('success', 'Buku berhasil dihapus!');
         } catch (\Exception $e) {
             // Kalau terjadi error (misal gagal konek DB, foreign key constraint, dll)
             return redirect('/books')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());

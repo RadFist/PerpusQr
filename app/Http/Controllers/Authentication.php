@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Loging;
+use App\Models\Member;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class Authentication extends Controller
 {
@@ -51,23 +53,42 @@ class Authentication extends Controller
     //post registration logic function
     public function registration(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
+        try {
 
+            if ($request->role == "user") {
+                Member::create([
+                    'nama' => request()->name,
+                    'email' => request()->email,
+                ]);
+                Loging::addMember($request->name, 'ditambahkan', 'member');
+            }
 
-        // Simpan user baru
-        $user = User::create($validated);
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|unique:users,email',
+                'password' => 'required|string|min:6|confirmed',
+                'role' => 'nullable'
+            ]);
 
-        Loging::addMember($request->name, 'ditambahkan', "admin");
+            // Simpan user baru
+            $user = User::create($validated);
 
-        // Login otomatis setelah registrasi (optional)
-        Auth::login($user);
+            // Login otomatis setelah registrasi (optional)
+            Auth::login($user);
 
-        // Redirect ke dashboard
-        return redirect('/dashboard')->with('success', 'Registrasi berhasil! Selamat datang.');
+            if ($request->role != "user") {
+
+                Loging::addMember($request->name, 'ditambahkan', "admin");
+
+                return redirect('/dashboard')->with('success', 'Registrasi berhasil! Selamat datang.');
+            } else {
+                // return redirect('/BookList')->with('success', 'Registrasi berhasil! Selamat datang.');
+            }
+            return redirect('/dashboard')->with('success', 'Registrasi berhasil! Selamat datang.');
+        } catch (\Throwable $th) {
+            Log::info($th->getMessage());
+            return back()->with('error', $th->getMessage());
+        }
     }
 
 
