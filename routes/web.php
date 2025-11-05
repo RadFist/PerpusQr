@@ -47,8 +47,13 @@ Route::middleware([authentication::class])->group(function () {
         Route::resource('borrow', BorrowController::class);
         Route::post('borrow/dikembalikan/{id}', [BorrowController::class,  'returning'])->name('borrow.return');
     });
+    Route::get('user/book/{id}', [UserController::class, 'detailBook'])->name('detaiBookUser');
     Route::get('/home', [UserController::class, 'index']);
     Route::post('/profile/update', [UserController::class, 'index'])->name("profile.update");
+    Route::get('/list-book', [UserController::class, 'listBook'])->name("listBook");
+
+
+    Route::post('user/borrow/{id}', [UserController::class, 'memberBorrow'])->name("memberBorrow");
 
     Route::post('API/borrow/scan', [BorrowController::class, 'Scanning']);
 });

@@ -61,6 +61,8 @@
             background-color: red !important;
         }
 
+
+
         main {
             padding: 2rem;
             margin-top: 80px;
@@ -78,29 +80,39 @@
 <body>
 
     <!-- Header / Navbar -->
-    <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="w-100 d-flex justify-content-center align-items-center">
-            <a class="navbar-brand" href="/home">📚 Perpustakaan</a>
+    <nav class="navbar navbar-expand-lg ">
+        <div class="w-100 d-flex justify-content-between align-items-center">
 
-            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <ul class="navbar-nav d-flex align-items-center gap-3 mt-2">
+            <!-- Brand kiri -->
+            <a class="navbar-brand d-none d-lg-block" href="/home">📚 Perpustakaan</a>
+
+            <!-- Menu tengah -->
+            <div id="navbarNav">
+                <ul class="d-flex align-items-center gap-3 mt-2  list-unstyled">
                     <li class="nav-item">
-                        <a class="btn btn-outline-primary " href="/home">
+                        <a class="btn btn-outline-primary" href="/home">
                             <i class="bi bi-house-door"></i> Home
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-outline-primary " href="/list-book">
+                        <a class="btn btn-outline-primary" href="/list-book">
                             <i class="bi bi-book"></i> Buku
                         </a>
                     </li>
                 </ul>
-
             </div>
+
+            <!-- Profil kanan -->
             <div class="nav-item dropdown ms-3">
-                <a class="nav-link dropdown-toggle d-flex flex-column align-items-center text-white" href="#" id="profileDropdown"
-                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <div class="rounded-circle bg-light d-flex justify-content-center align-items-center"
+                <a
+                    class="nav-link dropdown-toggle d-flex flex-column align-items-center text-white"
+                    href="#"
+                    id="profileDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <div
+                        class="rounded-circle bg-light d-flex justify-content-center align-items-center"
                         style="width: 40px; height: 40px;">
                         <i class="bi bi-person-fill text-primary fs-4"></i>
                     </div>
@@ -127,7 +139,7 @@
     </nav>
 
     <!-- Main Content -->
-    <main>
+    <main class="{{ Request::is('user/book/*') ? 'm-0 pt-0' : 'p-4' }}">
         @yield('content')
     </main>
 

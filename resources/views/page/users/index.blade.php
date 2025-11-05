@@ -11,27 +11,48 @@
                 <h5 class="fw-semibold mb-3">Statistik Akun</h5>
                 <div class="row text-center">
                     <div class="col-md-4 mb-3">
+                        <i class="bi bi-book fs-2 text-primary mb-2"></i>
                         <h3 class="fw-bold text-primary">{{ $borrowCount ?? 0 }}</h3>
                         <p class="text-muted mb-0">Buku Dipinjam</p>
                     </div>
                     <div class="col-md-4 mb-3">
+                        <i class="bi bi-arrow-return-left fs-2 text-success mb-2"></i>
                         <h3 class="fw-bold text-success">{{ $returnedCount ?? 0 }}</h3>
                         <p class="text-muted mb-0">Buku Dikembalikan</p>
                     </div>
                     <div class="col-md-4 mb-3">
+                        <i class="bi bi-alarm-fill fs-2 text-warning mb-2"></i>
                         <h3 class="fw-bold text-warning">{{ $lateCount ?? 0 }}</h3>
                         <p class="text-muted mb-0">Terlambat</p>
                     </div>
                 </div>
 
+
                 <hr>
 
                 <h6 class="fw-semibold mt-4 mb-2">Status Akun</h6>
                 <div class="progress mb-2" style="height: 8px;">
-                    <div class="progress-bar bg-success" role="progressbar" style="width: 80%;"
-                        aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+
+                    @php
+                    $total = $borrowCount + $returnedCount + $lateCount;
+                    $percent = $total > 0 ? (($returnedCount + $borrowCount) / $total) * 100 : 0;
+                    if ($percent >= 75) {
+                    $message = "Aktivitas akun kamu sangat baik! Terus pertahankan 📚";
+                    $color = "success";
+                    } elseif ($percent >= 50) {
+                    $message = "Aktivitas akun kamu cukup baik, tetap tingkatkan ya! 💪";
+                    $color = "warning";
+                    } else {
+                    $message = "Aktivitas akun kamu perlu diperbaiki ⚠️ sering terjadi keterlambatan.";
+                    $color = "danger";
+                    }
+                    @endphp
+                    <div class="progress-bar bg-{{ $color }}" role="progressbar" style="width: {{ $percent }}%;"
+                        aria-valuenow="{{ $percent }}" aria-valuemin="0" aria-valuemax="100"></div>/
                 </div>
-                <small class="text-muted">Aktivitas akun kamu sangat baik! Terus pertahankan 📚</small>
+                <small class="text-muted">
+                    {{ $message }} ({{ number_format($percent, 1) }}%)
+                </small>
             </div>
         </div>
 
@@ -53,6 +74,70 @@
                 </div>
             </div>
         </div>
+
+        <!-- List Buku Dipinjam -->
+        <div class="container my-5">
+            <h4 class="fw-bold text-primary mb-4">
+                <i class="bi bi-journal-bookmark me-2"></i> Buku yang Sedang Kamu Pinjam
+            </h4>
+
+            <div class="row g-4">
+                @forelse($books as $borrow)
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm border-0 pt-3">
+                        <!-- Cover Buku -->
+                        @if(file_exists(public_path('img/covers/' . $borrow->book->cover_image)))
+                        <img
+                            src="{{ asset('img/covers/' . $borrow->book->cover_image) }}"
+                            alt="cover book"
+                            class="card-img-top rounded-top"
+                            style="height: 400px;  object-fit: contain;">
+                        @else
+                        <div
+                            class="d-flex justify-content-center align-items-center bg-light text-muted"
+                            style="height: 400px; border-top-left-radius: .5rem; border-top-right-radius: .5rem;">
+                            <i class="bi bi-book fs-1"></i>
+                        </div>
+                        @endif
+
+                        <!-- Detail Buku -->
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-semibold text-dark mb-2">{{ $borrow->book->judul }}</h5>
+                            <p class="card-text text-muted mb-1">
+                                <i class="bi bi-person me-1"></i> {{ $borrow->book->penulis }}
+                            </p>
+                            <p class="card-text text-muted mb-3">
+                                <i class="bi bi-calendar-event me-1"></i>
+                                Pinjam: {{ \Carbon\Carbon::parse($borrow->tanggal_pinjam)->format('d M Y') }}
+                            </p>
+
+                            @if($borrow->tanggal_kembali)
+                            <span class="badge bg-success align-self-start mb-3">
+                                <i class="bi bi-check-circle me-1"></i> Dikembalikan
+                            </span>
+                            @elseif(\Carbon\Carbon::parse($borrow->tanggal_pinjam)->addWeek()->isPast())
+                            <span class="badge bg-danger align-self-start mb-3">
+                                <i class="bi bi-exclamation-triangle me-1"></i> Terlambat
+                            </span>
+                            @else
+                            <span class="badge bg-warning text-dark align-self-start mb-3">
+                                <i class="bi bi-hourglass-split me-1"></i> Sedang Dipinjam
+                            </span>
+                            @endif
+
+
+                        </div>
+                    </div>
+                </div>
+                @empty
+                <div class="col-12 text-center py-5">
+                    <i class="bi bi-emoji-frown text-secondary fs-1"></i>
+                    <p class="text-muted mt-3">Kamu belum meminjam buku apa pun saat ini.</p>
+                </div>
+                @endforelse
+            </div>
+        </div>
+
     </div>
 </div>
 

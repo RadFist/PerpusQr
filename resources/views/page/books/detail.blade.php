@@ -1,4 +1,5 @@
-@extends('layouts.app')
+@extends(!isset($level) ? 'layouts.app' : 'layouts.userApp')
+
 
 @section('title', 'Detail Buku')
 
@@ -7,9 +8,11 @@
     <h3 class="fw-semibold text-primary">
         <i class="bi bi-book me-2"></i>Detail Buku
     </h3>
-    <a href="{{ route('books.index') }}" class="btn btn-outline-primary btn-sm">
+    @if (!isset($level))
+    <a href="{{ isset($level) ? url('list-book') : route('books.index') }}" class="btn btn-outline-primary btn-sm">
         <i class="bi bi-arrow-left"></i> Kembali
     </a>
+    @endif
 </div>
 
 <div class="card border-0 shadow-sm">
@@ -48,11 +51,15 @@
                         <td>: {{ $stok }}</td>
                     </tr>
                 </table>
-
-                <a href="#" class="btn btn-primary me-2">
-                    <i class="bi bi-journal-plus"></i> Pinjam Buku
-                </a>
-                <a href="{{ route('books.index') }}" class="btn btn-outline-secondary">
+                @if(isset($level))
+                <form action="{{route('memberBorrow',$id)}}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="bi bi-journal-plus"></i> Pinjam Buku
+                    </button>
+                </form>
+                @endif
+                <a href="{{ isset($level) ? url('list-book') : route('books.index') }}" class="btn btn-outline-secondary">
                     <i class="bi bi-arrow-left"></i> Kembali ke Daftar
                 </a>
             </div>
@@ -70,6 +77,7 @@
         </div>
     </div>
 </div>
+
 
 
 @endsection
